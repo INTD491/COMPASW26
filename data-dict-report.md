@@ -52,3 +52,31 @@ This report list out all of the variables, their meaning, attributes,key feature
 |event         |Binary     |Used in Cox Proportional Hazards models to indicate if a recidivism "event" occurred.|
 
 
+## Protected attributes
+Attributes that describe a person’s identity
+|Attribute     |Data Type  |Role in Analysis                                            |
+|--------------|-----------|------------------------------------------------------------|
+|race          |Categorical|The primary focus of the ProPublica study; used to test for racial bias.|
+|sex           |Binary     |Used to test for gender-based disparities in risk scoring.  |
+|age_cat       |Categorical|Often treated as a protected attribute to ensure younger defendants aren't unfairly penalized.|
+
+
+
+
+## Key attributes (Predictors)
+inputs used to train the model.
+|Attribute     |Data Type  |Why it is a Key Feature                                     |
+|--------------|-----------|------------------------------------------------------------|
+|priors_count  |Integer    |The strongest predictor of future recidivism in most models.|
+|juv_fel_count |Integer    |Juvenile history is a significant factor in long-term risk assessment.|
+|juv_misd_count|Integer    |Minor juvenile offenses that still correlate with future behavior.|
+|age           |Integer    |Statistically, younger individuals have higher rates of re-offense.|
+|c_charge_degree|Categorical|Distinguishes between the severity of the current crime (Felony vs. Misdemeanor).|
+
+
+## Prediction attributes
+|two_year_recid|Binary     |The Target (y): What the model is actually trying to predict.|
+
+
+# Model Analysis
+We will train 2 models (with and without protected value to check for bias)
