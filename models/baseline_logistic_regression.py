@@ -59,19 +59,15 @@ warnings.filterwarnings('ignore')
 
 def load_and_preprocess_data(filepath):
     """
-    Load and preprocess COMPAS dataset following ProPublica's filtering criteria.
-    
-    ProPublica filtering (2016):
-    - Remove cases where days_b_screening_arrest is over 30 or under -30
-    - Remove cases where is_recid is -1
-    - Remove cases where c_charge_degree is 'O' (ordinary traffic offense)
-    - Keep only Compas screening date between 2013-2014
+    Load and preprocess dataset.
+
+    For the original COMPAS dataset this function can implement the
+    ProPublica-style filters; for aligned NJ data we simply apply the
+    common-sense filters that are available in both schemas.
     """
     df = pd.read_csv(filepath)
     
-    # Apply ProPublica filters
-    df = df[df['days_b_screening_arrest'] <= 30]
-    df = df[df['days_b_screening_arrest'] >= -30]
+    # Shared filters that make sense for both COMPAS and NJ-aligned data
     df = df[df['is_recid'] != -1]
     df = df[df['c_charge_degree'] != 'O']
     df = df[df['score_text'] != 'N/A']
@@ -107,10 +103,12 @@ def prepare_features(df, include_race=False):
     # 3. Prior convictions (strongest predictor)
     features['priors_count'] = df['priors_count'].values
     
-    # 4. Juvenile history
-    features['juv_fel_count'] = df['juv_fel_count'].values
-    features['juv_misd_count'] = df['juv_misd_count'].values
-    features['juv_other_count'] = df['juv_other_count'].values
+    # 4. Juvenile history (if available in the dataset; COMPAS-only)
+    juv_cols = {'juv_fel_count', 'juv_misd_count', 'juv_other_count'}
+    if juv_cols.issubset(df.columns):
+        features['juv_fel_count'] = df['juv_fel_count'].values
+        features['juv_misd_count'] = df['juv_misd_count'].values
+        features['juv_other_count'] = df['juv_other_count'].values
     
     # 5. Current charge degree (Felony=1, Misdemeanor=0)
     features['charge_degree_felony'] = (df['c_charge_degree'] == 'F').astype(int).values
@@ -291,7 +289,7 @@ def main():
     print("\n=== Baseline Logistic Regression ===")
     
     # Load data
-    filepath = 'datasets/compas-analysis/compas-scores-two-years.csv'
+    filepath = 'nj_dataset_aligned.csv'
     df = load_and_preprocess_data(filepath)
     print(f"Samples: {len(df)} | Recidivism rate: {df['two_year_recid'].mean():.1%}")
     

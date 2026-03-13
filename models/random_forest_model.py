@@ -64,8 +64,6 @@ def load_and_preprocess_data(filepath):
     df = pd.read_csv(filepath)
     
     # Apply ProPublica filters
-    df = df[df['days_b_screening_arrest'] <= 30]
-    df = df[df['days_b_screening_arrest'] >= -30]
     df = df[df['is_recid'] != -1]
     df = df[df['c_charge_degree'] != 'O']
     df = df[df['score_text'] != 'N/A']
@@ -87,9 +85,12 @@ def prepare_features(df, include_race=False):
     # Continuous features
     features['age'] = df['age'].values
     features['priors_count'] = df['priors_count'].values
-    features['juv_fel_count'] = df['juv_fel_count'].values
-    features['juv_misd_count'] = df['juv_misd_count'].values
-    features['juv_other_count'] = df['juv_other_count'].values
+    if 'juv_fel_count' in df.columns:
+        features['juv_fel_count'] = df['juv_fel_count'].values
+    if 'juv_misd_count' in df.columns:
+        features['juv_misd_count'] = df['juv_misd_count'].values
+    if 'juv_other_count' in df.columns:
+        features['juv_other_count'] = df['juv_other_count'].values
     
     # Binary features
     features['sex_male'] = (df['sex'] == 'Male').astype(int).values
@@ -332,7 +333,7 @@ def main():
     print("\n=== Random Forest Model ===")
     
     # Load data
-    filepath = '../COMPASW26/datasets/compas-analysis/compas-scores-two-years.csv'
+    filepath = '../COMPASW26/datasets/compas-analysis/nj_dataset_aligned.csv'
     df = load_and_preprocess_data(filepath)
     print(f"Samples: {len(df)} | Recidivism rate: {df['two_year_recid'].mean():.1%}")
     
