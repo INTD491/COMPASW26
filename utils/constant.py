@@ -1,1 +1,0 @@
-DATASET_PATH = "./datasets/compas-analysis/compas-scores-two-years.csv"
