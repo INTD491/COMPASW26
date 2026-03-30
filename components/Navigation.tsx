@@ -1,6 +1,25 @@
+"use client";
+
 import Link from "next/link";
+import { usePathname } from "next/navigation";
+
+const links = [
+  { href: "/", label: "Home" },
+  { href: "/prediction", label: "Prediction" },
+  { href: "/fairness", label: "Fairness" },
+  { href: "/generalization", label: "Generalization" },
+  { href: "/models", label: "Models" },
+  { href: "/eda", label: "EDA" },
+  { href: "/diagnostic", label: "Diagnostic" },
+  { href: "/about", label: "About" },
+];
 
 export function Navigation() {
+  const pathname = usePathname();
+
+  const isActive = (href: string) =>
+    href === "/" ? pathname === "/" : pathname.startsWith(href);
+
   return (
     <nav style={{
       background: "var(--primary-navy)",
@@ -23,60 +42,34 @@ export function Navigation() {
         }}>
           COMPAS Dashboard
         </Link>
-        
+
         <div style={{
           display: "flex",
-          gap: "24px",
+          gap: "8px",
           marginLeft: "auto"
         }}>
-          <Link href="/" style={{
-            textDecoration: "none",
-            color: "rgba(255,255,255,0.8)",
-            fontSize: "14px",
-            transition: "color 200ms"
-          }}>
-            Home
-          </Link>
-          <Link href="/prediction" style={{
-            textDecoration: "none",
-            color: "rgba(255,255,255,0.8)",
-            fontSize: "14px",
-            transition: "color 200ms"
-          }}>
-            Prediction
-          </Link>
-          <Link href="/fairness" style={{
-            textDecoration: "none",
-            color: "rgba(255,255,255,0.8)",
-            fontSize: "14px",
-            transition: "color 200ms"
-          }}>
-            Fairness
-          </Link>
-          <Link href="/generalization" style={{
-            textDecoration: "none",
-            color: "rgba(255,255,255,0.8)",
-            fontSize: "14px",
-            transition: "color 200ms"
-          }}>
-            Generalization
-          </Link>
-          <Link href="/models" style={{
-            textDecoration: "none",
-            color: "rgba(255,255,255,0.8)",
-            fontSize: "14px",
-            transition: "color 200ms"
-          }}>
-            Models
-          </Link>
-          <Link href="/about" style={{
-            textDecoration: "none",
-            color: "rgba(255,255,255,0.8)",
-            fontSize: "14px",
-            transition: "color 200ms"
-          }}>
-            About
-          </Link>
+          {links.map(({ href, label }) => {
+            const active = isActive(href);
+            return (
+              <Link
+                key={href}
+                href={href}
+                style={{
+                  textDecoration: "none",
+                  fontSize: "14px",
+                  fontWeight: active ? 700 : 400,
+                  color: active ? "white" : "rgba(255,255,255,0.65)",
+                  padding: "5px 12px",
+                  borderRadius: "6px",
+                  background: active ? "rgba(255,255,255,0.15)" : "transparent",
+                  borderBottom: active ? "2px solid #38bdf8" : "2px solid transparent",
+                  transition: "all 150ms",
+                }}
+              >
+                {label}
+              </Link>
+            );
+          })}
         </div>
       </div>
     </nav>
