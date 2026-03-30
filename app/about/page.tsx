@@ -1,5 +1,166 @@
 "use client";
 
+const teamMembers = [
+  {
+    initials: "TO",
+    name: "Tola",
+    role: "Project Lead",
+    responsibilities: [
+      "Overall project coordination and milestone tracking",
+      "UI design and dashboard aesthetics",
+      "Final presentation and deployment oversight",
+    ],
+    color: "#FF499E",
+    bg: "rgba(14, 165, 233, 0.1)",
+  },
+  {
+    initials: "ER",
+    name: "Eric",
+    role: "Data Lead & Cloud",
+    responsibilities: [
+      "Cloud infrastructure setup on Vercel",
+      "Florida COMPAS dataset preprocessing and cleaning",
+      "API route development for serverless inference",
+    ],
+    color: "#10b981",
+    bg: "rgba(16, 185, 129, 0.1)",
+  },
+  {
+    initials: "JU",
+    name: "Juan",
+    role: "Data Lead & Feature Engineering",
+    responsibilities: [
+      "Georgia NIJ dataset preprocessing and alignment",
+      "Feature selection and engineering pipeline",
+      "Cross-jurisdiction dataset comparison analysis",
+    ],
+    color: "#06b6d4",
+    bg: "rgba(6, 182, 212, 0.1)",
+  },
+  {
+    initials: "SE",
+    name: "Sevryn",
+    role: "Model Lead",
+    responsibilities: [
+      "Training Logistic Regression, Random Forest, and Decision Tree models",
+      "Hyperparameter tuning and cross-validation",
+      "SHAP interpretability integration",
+    ],
+    color: "#f59e0b",
+    bg: "rgba(245, 158, 11, 0.1)",
+  },
+  {
+    initials: "KO",
+    name: "Koyinsola",
+    role: "Evaluation Lead",
+    responsibilities: [
+      "Fairness metric computation (DI, SPD, EOD)",
+      "Debiasing strategy evaluation",
+      "Generalization and transfer learning analysis",
+    ],
+    color: "#ef4444",
+    bg: "rgba(239, 68, 68, 0.1)",
+  },
+  {
+    initials: "NE",
+    name: "Nelson",
+    role: "Communications Lead",
+    responsibilities: [
+      "EDA and diagnostic analysis sections",
+      "Documentation and report writing",
+      "Presentation slides and demo preparation",
+    ],
+    color: "#8b5cf6",
+    bg: "rgba(139, 92, 246, 0.1)",
+  },
+];
+
+function TeamCard({
+  initials,
+  name,
+  role,
+  responsibilities,
+  color,
+  bg,
+}: (typeof teamMembers)[0]) {
+  return (
+    <div
+      style={{
+        border: "1px solid #e2e8f0",
+        borderRadius: "12px",
+        overflow: "hidden",
+      }}
+    >
+      <div
+        style={{
+          padding: "16px 20px",
+          borderBottom: "1px solid #f1f5f9",
+          display: "flex",
+          alignItems: "center",
+          gap: "14px",
+        }}
+      >
+        <div
+          style={{
+            width: "44px",
+            height: "44px",
+            borderRadius: "50%",
+            background: bg,
+            border: `2px solid ${color}`,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            fontSize: "14px",
+            fontWeight: 700,
+            color: color,
+            flexShrink: 0,
+          }}
+        >
+          {initials}
+        </div>
+        <div>
+          <div style={{ fontSize: "16px", fontWeight: 700, color: "#1e293b" }}>
+            {name}
+          </div>
+          <div style={{ fontSize: "12px", fontWeight: 600, color: color, marginTop: "2px" }}>
+            {role}
+          </div>
+        </div>
+      </div>
+
+      <div style={{ padding: "16px 20px", background: "#fafbfc" }}>
+        <ul style={{ margin: 0, padding: 0, listStyle: "none", display: "grid", gap: "8px" }}>
+          {responsibilities.map((r, i) => (
+            <li
+              key={i}
+              style={{
+                display: "flex",
+                gap: "10px",
+                alignItems: "flex-start",
+                fontSize: "13px",
+                color: "#475569",
+                lineHeight: "1.5",
+              }}
+            >
+              <span
+                style={{
+                  width: "5px",
+                  height: "5px",
+                  borderRadius: "50%",
+                  background: color,
+                  marginTop: "6px",
+                  flexShrink: 0,
+                }}
+              />
+              {r}
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
+  );
+}
+
 export default function AboutPage() {
   return (
     <main className="page-shell">
@@ -7,8 +168,8 @@ export default function AboutPage() {
         <p className="eyebrow">About</p>
         <h1>Understanding Fairness in Recidivism Prediction</h1>
         <p>
-          This dashboard explores interpretability and fairness in machine learning models 
-          for criminal risk assessment. We evaluate multiple approaches, their trade-offs, 
+          This dashboard explores interpretability and fairness in machine learning models
+          for criminal risk assessment. We evaluate multiple approaches, their trade-offs,
           and practical deployment considerations for high-stakes decision-making.
         </p>
       </section>
@@ -52,10 +213,30 @@ export default function AboutPage() {
               borderLeft: "4px solid #0ea5e9"
             }}>
               <p style={{ margin: 0, lineHeight: "1.6", color: "#1e293b", fontSize: "14px" }}>
-                This project investigates how machine learning models trained on historical criminal justice 
-                data can perpetuate and amplify systemic biases. We examine fairness metrics, debiasing techniques, 
+                This project investigates how machine learning models trained on historical criminal justice
+                data can perpetuate and amplify systemic biases. We examine fairness metrics, debiasing techniques,
                 and the generalization of models across different jurisdictions.
               </p>
+            </div>
+          </div>
+        </section>
+
+        <section className="section-card">
+          <div className="section-card__body">
+            <div className="section-card__header">
+              <h2>Team Members</h2>
+              <p>Roles and contributions</p>
+            </div>
+
+            <div style={{
+              display: "grid",
+              gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))",
+              gap: "16px",
+              marginTop: "8px",
+            }}>
+              {teamMembers.map((member) => (
+                <TeamCard key={member.name} {...member} />
+              ))}
             </div>
           </div>
         </section>
@@ -128,7 +309,7 @@ export default function AboutPage() {
                   COMPAS Florida
                 </h3>
                 <p style={{ margin: 0, fontSize: "14px", color: "#64748b", lineHeight: "1.6" }}>
-                  Proprietary Correctional Offender Management Profiling for Alternative Sanctions (COMPAS) 
+                  Proprietary Correctional Offender Management Profiling for Alternative Sanctions (COMPAS)
                   dataset from Florida (2013-2014), containing 7,214 defendants and their 2-year recidivism outcomes.
                 </p>
               </div>
@@ -142,7 +323,7 @@ export default function AboutPage() {
                   NIJ Georgia
                 </h3>
                 <p style={{ margin: 0, fontSize: "14px", color: "#64748b", lineHeight: "1.6" }}>
-                  National Institute of Justice (NIJ) dataset from Georgia, with 25,835 records used to evaluate 
+                  National Institute of Justice (NIJ) dataset from Georgia, with 25,835 records used to evaluate
                   model generalization and transferability across jurisdictions.
                 </p>
               </div>
@@ -195,7 +376,7 @@ export default function AboutPage() {
                   Dressel, J., & Farid, H. (2018).
                 </div>
                 <p style={{ margin: 0, color: "#64748b" }}>
-                  "The accuracy, fairness, and limits of predicting recidivism." 
+                  "The accuracy, fairness, and limits of predicting recidivism."
                   Science Advances, 4(1), eaao5580.
                 </p>
               </div>
@@ -205,7 +386,7 @@ export default function AboutPage() {
                   Rudin, C., & Ustun, B. (2020).
                 </div>
                 <p style={{ margin: 0, color: "#64748b" }}>
-                  "Optimized scoring systems: Toward trust in machine learning for 
+                  "Optimized scoring systems: Toward trust in machine learning for
                   criminal justice." Journal of Criminal Justice, 66, 101646.
                 </p>
               </div>
@@ -215,7 +396,7 @@ export default function AboutPage() {
                   Wang, Z., Xu, Z., & Glasser, J. (2022).
                 </div>
                 <p style={{ margin: 0, color: "#64748b" }}>
-                  "Fair machine learning in criminal justice." 
+                  "Fair machine learning in criminal justice."
                   Nature Machine Intelligence, 4(5), 408-415.
                 </p>
               </div>
@@ -233,8 +414,9 @@ export default function AboutPage() {
             </div>
 
             <p style={{ margin: "0 0 12px 0", lineHeight: "1.6", opacity: "0.9" }}>
-              This dashboard is part of INTD 491: Cloud Deployment, Winter 2026, 
-              taught at the University of Alberta. It demonstrates best practices for 
+              This dashboard is part of INTD 491: Cloud Deployment, Winter 2026,
+              taught at the University of Alberta. 
+              It demonstrates best practices for
               deploying ML models to the cloud with accountability and transparency.
             </p>
 
